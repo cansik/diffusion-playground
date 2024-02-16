@@ -1,5 +1,5 @@
-from ImageGenerator import ImageGenerator
-from LatentPromptWalker import LatentPromptWalker
+from generator.ImageGenerator import ImageGenerator
+from generator.LatentPromptWalker import LatentPromptWalker
 from utils import curve_utils
 from utils.media_utils import generate_video_from_pil_images
 
