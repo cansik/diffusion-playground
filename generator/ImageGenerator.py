@@ -26,6 +26,8 @@ class ImageGenerator:
         # optimize for speed
         if not torch_utils.is_macosx():
             self.pipe.unet.set_default_attn_processor()
+
+        if torch_utils.is_linux():
             self.pipe.unet = torch.compile(self.pipe.unet, mode="reduce-overhead", fullgraph=True)
 
         self.pipe.set_progress_bar_config(disable=True)
