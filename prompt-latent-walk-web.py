@@ -15,9 +15,14 @@ walker: Optional[LatentPromptWalker] = None
 batch_size = 16
 
 
-def generate(prompts_text: str, interpolation_steps: int, fps: int, loop: bool, seed: int):
+def generate(prompts_text: str, style: str, interpolation_steps: int, fps: int, loop: bool, seed: int):
     # prepare prompts
     prompts = [p.strip() for p in prompts_text.split("\n") if p.strip() != ""]
+
+    # add style to prompts
+    style = style.strip()
+    if style != "":
+        prompts = [f"{p}, {style}" for p in prompts]
 
     if len(prompts) < 2:
         raise gr.Error("Please insert at least two prompts to interpolate betweeen.")
@@ -43,6 +48,7 @@ def main():
         generate,
         [
             gr.Textbox(label="Prompts", placeholder="Write a prompt per line.", lines=5, max_lines=5),
+            gr.Textbox(label="Style", placeholder="The style will be added to each prompt."),
             gr.Slider(label="Interpolation Steps", value=10, minimum=1, maximum=30, step=1),
             gr.Slider(label="FPS", value=10, minimum=1, maximum=30, step=1),
             gr.Checkbox(label="Loop"),
@@ -57,6 +63,8 @@ def main():
 
     # hack for progressbar
     demo.dependencies[0]["show_progress"] = False  # the hack
+
+    demo.enable_queue = True
 
     # load image generator
     global image_generator, walker
