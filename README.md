@@ -1,6 +1,6 @@
 # Diffusion Playground
 
-Experiments with image generation models.
+Experiments with image generation models. The experiments are mainly for the [SDXL Turbo model](https://huggingface.co/stabilityai/sdxl-turbo), as it is more interesting to play with such a reactive model.
 
 ## Installation
 
