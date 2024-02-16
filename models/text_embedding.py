@@ -70,7 +70,7 @@ def interpolate_text_encodings_custom(a: TextEmbedding, b: TextEmbedding, steps:
         plt.plot(x_values, sample_points, marker='x', linestyle='-')
         plt.show()
 
-    weights = torch.tensor(sample_points, device=a.prompt_embeds.device, dtype=torch.float32)
+    weights = torch.tensor(sample_points, device=a.prompt_embeds.device, dtype=torch_utils.get_dtype())
 
     return TextEmbedding(
         torch_utils.lerp_at(a.prompt_embeds.squeeze(), b.prompt_embeds.squeeze(), weights),
