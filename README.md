@@ -20,6 +20,11 @@ Generate latent walks in the prompt latent space.
 
 [prompt-latent-walk.py](prompt-latent-walk.py)
 
+### Noise Latent Walk
+Initial implementation of initial noise latent walk.
+
+[noise-latent-walk.py](noise-latent-walk.py)
+
 ### Latent Explorer Web
 
 ![Latent Explorer Web](images/latent-explorer-web.jpg)
