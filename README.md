@@ -1,6 +1,8 @@
 # Diffusion Playground
 
-Experiments with image generation models. The experiments are mainly for the [SDXL Turbo model](https://huggingface.co/stabilityai/sdxl-turbo), as it is more interesting to play with such a reactive model.
+Experiments with image generation models. The experiments are mainly for
+the [SDXL Turbo model](https://huggingface.co/stabilityai/sdxl-turbo), as it is more interesting to play with such a
+reactive model.
 
 ## Installation
 
@@ -18,12 +20,27 @@ pip install -r requirements.txt
 
 Generate latent walks in the prompt latent space.
 
-[prompt-latent-walk.py](prompt-latent-walk.py)
+```
+python prompt-latent-walk.py
+```
+
+### Prompt Latent Walk Web
+
+![Prompt Latent Walk Web](images/prompt-latent-walk-web.jpg)
+
+A webinterface to create latent walks.
+
+```
+python prompt-latent-walk-web.py
+```
 
 ### Noise Latent Walk
+
 Initial implementation of initial noise latent walk.
 
-[noise-latent-walk.py](noise-latent-walk.py)
+```
+python noise-latent-walk.py
+```
 
 ### Latent Explorer Web
 
@@ -31,7 +48,10 @@ Initial implementation of initial noise latent walk.
 
 Explore the noise latent space with 4 sliders.
 
-[latent-explorer-web.py](latent-explorer-web.py)
+```
+python latent-explorer-web.py
+```
 
 ## About
+
 Copyright (c) 2024 Florian Bruggisser
