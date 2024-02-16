@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from PIL import Image
 
-from ImageGenerator import ImageGenerator
+from generator.ImageGenerator import ImageGenerator
 from models.text_embedding import InterpolationMethod, TextEmbedding, interpolate_text_encodings_custom, \
     cat_text_encodings
 
@@ -15,10 +15,14 @@ class LatentPromptWalker:
     def generate_walk(self, prompts: List[str],
                       interpolation_steps: int,
                       interpolation_method: Optional[InterpolationMethod] = None,
+                      loop: bool = False,
                       **generator_args) -> List[Image]:
         # generate prompt encodings
         encodings = [TextEmbedding(*self.generator.pipe.encode_prompt(p, num_images_per_prompt=1))
                      for p in prompts]
+
+        if loop:
+            encodings.append(encodings[0])
 
         # create list (e0 to e1, e1 to e2 and so on)
         it1, it2 = tee(encodings)
