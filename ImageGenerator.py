@@ -5,7 +5,7 @@ from PIL import Image
 from diffusers import AutoPipelineForText2Image
 from tqdm import tqdm
 
-from models.text_embedding import TextEncoderResult
+from models.text_embedding import TextEmbedding
 from utils import torch_utils
 
 
@@ -40,7 +40,7 @@ class ImageGenerator:
         pipe = AutoPipelineForText2Image.from_pretrained(name, torch_dtype=torch_dtype)
         return ImageGenerator(pipe, device)
 
-    def generate_images(self, embeddings: TextEncoderResult, batch_size: int = 4,
+    def generate_images(self, embeddings: TextEmbedding, batch_size: int = 4,
                         guidance_scale: float = 0.0, num_inference_steps: int = 1,
                         seed: int = 42, latents: Optional[torch.Tensor] = None) -> List[Image]:
         batches = embeddings.split(batch_size)
