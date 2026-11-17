@@ -13,6 +13,9 @@ def generate_video_from_pil_images(video_path: PathLike, images: List[Image], fr
     video_path.parent.mkdir(parents=True, exist_ok=True)
 
     numpy_images = np.array([np.asarray(i) for i in images])
-    ffmpegio.video.write(str(video_path), frame_rate, numpy_images, overwrite=True, pix_fmt="yuv420p")
+    ffmpegio.video.write(
+        str(video_path), frame_rate, numpy_images,
+        overwrite=True, vcodec="libx264", pix_fmt="yuv420p", movflags="+faststart",
+    )
 
     return video_path

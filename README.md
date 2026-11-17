@@ -6,13 +6,34 @@ reactive model.
 
 ## Installation
 
-Please use a recent version of python (`3.11` recommended):
+On macOS, use an Apple silicon Mac running macOS 14 or later. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and FFmpeg with Homebrew, then sync the project.
 
+```sh
+brew install uv ffmpeg
+uv sync --locked
 ```
-pip install -r requirements.txt
-```
+
+uv uses Python 3.12 for this project. On the first run, Diffusers downloads and caches about 7 GB of SDXL Turbo weights from Hugging Face. PyTorch automatically uses CUDA or Apple Metal (MPS) when available and otherwise uses the CPU.
+
+The Gradio apps print their local URL when the model finishes loading. To make an app reachable on your local network, set `GRADIO_SERVER_NAME=0.0.0.0` when launching it.
 
 ## Experiments
+
+### Image Generator
+
+Generate one image from a prompt with adjustable seed, denoising steps, and temperature.
+
+```sh
+uv run --locked generate-image-web.py
+```
+
+### Denoising Progression
+
+View the initial noise and every step of one SDXL Turbo run in a gallery. Choose one to four denoising steps.
+
+```sh
+uv run --locked denoising-progression-web.py
+```
 
 ### Prompt Latent Walk
 
@@ -21,7 +42,7 @@ pip install -r requirements.txt
 Generate latent walks in the prompt latent space.
 
 ```
-python prompt-latent-walk.py
+uv run --locked prompt-latent-walk.py
 ```
 
 ### Prompt Latent Walk Web
@@ -31,7 +52,7 @@ python prompt-latent-walk.py
 A webinterface to create latent walks.
 
 ```
-python prompt-latent-walk-web.py
+uv run --locked prompt-latent-walk-web.py
 ```
 
 ### Noise Latent Walk
@@ -39,7 +60,7 @@ python prompt-latent-walk-web.py
 Initial implementation of initial noise latent walk.
 
 ```
-python noise-latent-walk.py
+uv run --locked noise-latent-walk.py
 ```
 
 ### Latent Explorer Web
@@ -49,7 +70,7 @@ python noise-latent-walk.py
 Explore the noise latent space with 4 sliders.
 
 ```
-python latent-explorer-web.py
+uv run --locked latent-explorer-web.py
 ```
 
 ## About

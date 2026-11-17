@@ -1,6 +1,7 @@
 from itertools import tee
 from typing import List, Optional
 
+import torch
 from PIL import Image
 
 from generator.ImageGenerator import ImageGenerator
@@ -12,6 +13,7 @@ class LatentPromptWalker:
     def __init__(self, generator: ImageGenerator):
         self.generator = generator
 
+    @torch.inference_mode()
     def generate_walk(self, prompts: List[str],
                       interpolation_steps: int,
                       interpolation_method: Optional[InterpolationMethod] = None,

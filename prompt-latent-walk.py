@@ -11,7 +11,7 @@ def main():
         "a photograph of a cute rabbit",
     ]
 
-    generator = ImageGenerator.from_pretrained("stabilityai/sdxl-turbo")
+    generator = ImageGenerator.from_pretrained()
     walker = LatentPromptWalker(generator)
 
     # create interpolation curve
@@ -21,7 +21,7 @@ def main():
         result = curve.evaluate(float(x))
         return float(result[1][0])
 
-    images = walker.generate_walk(prompts, 10, batch_size=16,
+    images = walker.generate_walk(prompts, 10,
                                   interpolation_method=bezier_interpolate, loop=True)
     generate_video_from_pil_images("output/cat-dog-rabbit-walk.mp4", images, 10)
 

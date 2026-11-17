@@ -9,10 +9,7 @@ from generator.LatentPromptWalker import LatentPromptWalker
 from utils import curve_utils
 from utils.media_utils import generate_video_from_pil_images
 
-image_generator: Optional[ImageGenerator] = None
 walker: Optional[LatentPromptWalker] = None
-
-batch_size = 16
 
 
 def generate(prompts_text: str, style: str, interpolation_steps: int, fps: int, loop: bool, seed: int):
@@ -25,7 +22,7 @@ def generate(prompts_text: str, style: str, interpolation_steps: int, fps: int, 
         prompts = [f"{p}, {style}" for p in prompts]
 
     if len(prompts) < 2:
-        raise gr.Error("Please insert at least two prompts to interpolate betweeen.")
+        raise gr.Error("Enter at least two prompts to interpolate between.")
 
     # create interpolation curve
     curve = curve_utils.symmetric_cubic_bezier(0.25, 0.9)
@@ -34,12 +31,12 @@ def generate(prompts_text: str, style: str, interpolation_steps: int, fps: int, 
         result = curve.evaluate(float(x))
         return float(result[1][0])
 
-    images = walker.generate_walk(prompts, interpolation_steps,
+    images = walker.generate_walk(prompts, int(interpolation_steps),
                                   interpolation_method=bezier_interpolate, loop=loop,
-                                  batch_size=batch_size, seed=int(seed))
+                                  seed=int(seed))
 
     video_path = Path("output").joinpath(f"{str(uuid.uuid1().hex)}.mp4")
-    generate_video_from_pil_images(video_path, images, fps)
+    generate_video_from_pil_images(video_path, images, int(fps))
     return str(video_path)
 
 
@@ -58,21 +55,13 @@ def main():
             gr.Video(label="Latent Walk")
         ],
         title="Latent Walk Creator",
-        allow_flagging='never'
+        flagging_mode="never",
+        show_progress="minimal",
     )
 
-    # hack for progressbar
-    demo.dependencies[0]["show_progress"] = False  # the hack
-
-    demo.enable_queue = True
-
-    # load image generator
-    global image_generator, walker
-    image_generator = ImageGenerator.from_pretrained("stabilityai/sdxl-turbo")
-    walker = LatentPromptWalker(image_generator)
-
-    # launch web
-    demo.launch(server_name="0.0.0.0")
+    global walker
+    walker = LatentPromptWalker(ImageGenerator.from_pretrained())
+    demo.launch()
 
 
 if __name__ == "__main__":

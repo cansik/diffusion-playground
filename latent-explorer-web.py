@@ -1,23 +1,21 @@
 from typing import Optional
 
 import gradio as gr
-import torch
 from diffusers.utils.torch_utils import randn_tensor
 
 from generator.ImageGenerator import ImageGenerator
-from utils import torch_utils
 
 image_generator: Optional[ImageGenerator] = None
 
 
 def generate(prompt: str, steps: int, guidance_scale: float, seed: int,
              d0: float, d1: float, d2: float, d3: float):
-    generator = torch.manual_seed(int(seed))
+    generator = image_generator.make_generator(int(seed))
 
     pipe = image_generator.pipe
     latent_shape = 1, pipe.unet.config.in_channels, pipe.default_sample_size, pipe.default_sample_size
     initial_latents = randn_tensor(latent_shape, generator=generator,
-                                   device=image_generator.device, dtype=torch_utils.get_dtype())
+                                   device=image_generator.device, dtype=pipe.unet.dtype)
 
     # edit latents with slider
     initial_latents[0, 0, :] += d0
@@ -52,14 +50,9 @@ if __name__ == "__main__":
             gr.Image(label="Image")
         ],
         live=True,
-        allow_flagging='never'
+        flagging_mode="never",
+        show_progress="hidden",
     )
 
-    # hack for progressbar
-    demo.dependencies[0]["show_progress"] = False  # the hack
-
-    # load image generator
-    image_generator = ImageGenerator.from_pretrained("stabilityai/sdxl-turbo")
-
-    # launch web
-    demo.launch(server_name="0.0.0.0")
+    image_generator = ImageGenerator.from_pretrained()
+    demo.launch()
